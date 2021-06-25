@@ -1,13 +1,13 @@
-%% Getting the main fluxes and variables for the GBR model  %%
-%  Modified by Javier Porobic
+%% Getting the main fluxes and variables for the SAM model  %%
+%  Code created by Javier Porobic based on Jeff Dunn approach
 clear
 close all
-addpath('/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Codes_transport/functions/')
+addpath('/functions/')
 
 %%%       GLOBAL VARIABLES    %%%
 % Get the boxes  %%
 % Read the BMG file to get the value of the parameter from the polygons
-BGM_JFR_ll = '/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Codes_transport/20190812_Salish_Sea_ll_fixed.bgm';
+BGM_JFR_ll = '20190812_Salish_Sea_ll_fixed.bgm';
 [nbox,nface,bid,cent,b_area,vert, iface, botz] = read_boxes(BGM_JFR_ll);
 [nulr,nupt1,nupt2] = read_faces2(nbox, nface, bid, vert, iface, BGM_JFR_ll);
 iface      = iface;  %% Id of the faces
@@ -75,9 +75,9 @@ write_trans_file_SS(pt1,pt2,lr,nctime, Tfinal, fcid, guard)
 
 %% variables by layer
 %% Variables
+%% for y = 2015:????
 varn = {'wVelocity';  'salinity';  'temperature'}
-%%varn = {'salinity';  'temperature'}
-direc = ('/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea//Raw_Variables_data/');
+direc = ('/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Raw_Variables_data/');
 fll = '/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Codes_transport/mesh.nc';
 cd (['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Temp2/']);
 for v  =  1 : length(varn)
@@ -109,7 +109,7 @@ for v  =  1 : length(varn)
     % writing the NETCDF file
     %write_av_var(nctime, bid, avname, Av_final, guard)
 end
-
+%% end
 % put all the variables together
 temp = load(['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Temp2/Av_temperature.mat']);
 salt = load(['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Temp2/Av_salinity.mat']);
@@ -119,8 +119,8 @@ vert = load(['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Temp2/A
 temperature = temp.Av_final;
 salinity    = salt.Av_final;
 vertical    = vert.Av_final;
-%%vertical    =  vertical( : , 1:80,  : );
-nctime      = temp.nctime;w
+%% Saving the netdf file
+nctime      = temp.nctime;
 guard = (['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Final/SS_Variables_2016.nc']);
 %% just for 2016
 %nctime      = temp.nctime-86400;
@@ -128,11 +128,11 @@ dt=find(diff(nctime)==-64800)+1;
 dt2=[];
 for i = 1:length(dt)
     val2= (dt(i):(dt(i) + 3));
-dt2=[dt2,val2];
+dt2=[dt2, val2];
 end
 nctime(dt2)=[];
-%% New values avoiding mistake by years
-
+%% New values avoiding mistake [lags from reading files] by years
+%% if it can be read continously, there is no need for this
 temperature( : , dt2, : )=[];
 vertical( : , dt2, : )=[];
 salinity( : , dt2, : )=[];
