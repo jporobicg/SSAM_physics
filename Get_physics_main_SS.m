@@ -21,19 +21,17 @@ dinc       = 1;      %% 0.1; default 10km is probably ok, but for large boxes
                       % May want to reduce the face integration step 'dinc' for
                       % models with small or narrow boxes. Because the small boxes
                       % don't have problems of hiperdifusion
-dlev = [0  25 50 100 250 400 700]; %% This structure is related with
-                                             % the biology and with the
-                                             % maximum deph in the BMG model
+dlev = [0  25 50 100 250 400 700]; %% This structure is related with the biology
+                                   %% and with the maximum deph in the BMG model
 
 
 %% Running the model - saving by years %%
 % Transport between layers
 direc = (['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Raw_transport_data/']);
 %direc = (['/home/por07g/Documents/2019/Oil_spill/Hidro_Data/first_hidro/']);
-files = dir([direc, 'MERGED_*.nc']);
+files = dir([direc, 'MERGED_*.nc']); %% U and V in teh same file
 cd (['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Temp']);
-length(files)% for year = 2011 : 2012
-files.name
+%% for year = 2015 : ????
 
 fll = '/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Codes_transport/mesh.nc';
 
@@ -41,7 +39,6 @@ for f  =  1 : length(files)
         fnm         = [direc, files(f).name];
         transport_SS(vert, pt1, pt2, dlev, dinc, rimn, fnm, fll, f);
 end
-
 look = dir(['*SS_second_Step.mat']);
 for f = 1 : length(look)
     load(look(f).name)
@@ -79,9 +76,8 @@ write_trans_file_SS(pt1,pt2,lr,nctime, Tfinal, fcid, guard)
 varn = {'wVelocity';  'salinity';  'temperature'}
 direc = ('/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Raw_Variables_data/');
 fll = '/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Codes_transport/mesh.nc';
-cd (['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Temp2/']);
+cd (['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Temp2/']); %% temporal foldet to store the temporal files
 for v  =  1 : length(varn)
-
     avname  = char(varn(v));
     if~(v == 1)
         files = dir([direc, '2016-*_Raw_variables.nc']);
@@ -138,4 +134,3 @@ vertical( : , dt2, : )=[];
 salinity( : , dt2, : )=[];
 
 write_av_var_new(nctime, bid, temperature, salinity,  vertical, guard);
-
