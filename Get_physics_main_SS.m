@@ -51,23 +51,10 @@ for f = 1 : length(look)
     end
 end
 
-save('Tfinal.mat', 'Tfinal', 'nctime');
-
-% %% write transport
-load('Tfinal.mat')
-dt=find(diff(nctime)==-64800)+1;
-dt2=[];
-for i = 1:length(dt)
-    val2= (dt(i):(dt(i) + 3));
-dt2=[dt2,val2];
-end
-nctime(dt2)=[];
-
-Tfinal( : , dt2, : )=[];
-
-nctime      = temp.nctime-86400;
+%% save('Tfinal.mat', 'Tfinal', 'nctime'); %% no need this bit, used just in case you
+%% don´t do the transformation
 guard = (['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Final/SS_Transport_2016.nc']);
-write_trans_file_SS(pt1,pt2,lr,nctime, Tfinal, fcid, guard)
+write_trans_file_SS(pt1, pt2, lr, nctime, Tfinal, fcid, guard)
 
 
 %% variables by layer
@@ -118,19 +105,4 @@ vertical    = vert.Av_final;
 %% Saving the netdf file
 nctime      = temp.nctime;
 guard = (['/datasets/work/oa-gladstone-mr/work/oceano_data_Salish_sea/Final/SS_Variables_2016.nc']);
-%% just for 2016
-%nctime      = temp.nctime-86400;
-dt=find(diff(nctime)==-64800)+1;
-dt2=[];
-for i = 1:length(dt)
-    val2= (dt(i):(dt(i) + 3));
-dt2=[dt2, val2];
-end
-nctime(dt2)=[];
-%% New values avoiding mistake [lags from reading files] by years
-%% if it can be read continously, there is no need for this
-temperature( : , dt2, : )=[];
-vertical( : , dt2, : )=[];
-salinity( : , dt2, : )=[];
-
 write_av_var_new(nctime, bid, temperature, salinity,  vertical, guard);
