@@ -1,0 +1,24 @@
+#!/bin/bash
+#sudo make install -C /home/por07g/Documents/PhD/Oceanography/physics/Codes/Contruct/HydroConstruct/trunk/
+if [ $? -eq 0 ] ; then
+    #valgrind --leak-check=full --log-file=Valgrind.%p --show-reachable=yes
+    gdb --args HydroConstruct -f flowout.cdf -t tempout.cdf -s saltout.cdf -r parameters.prm
+
+    mkdir Output_salish_sea
+    mv saltout.cdf  Output_salish_sea
+    mv tempout.cdf  Output_salish_sea
+    mv flowout.cdf  Output_salish_sea/flowout.cdf
+    mv volume1.cdf  Output_salish_sea/volume.cdf
+
+    cd  Output_salish_sea
+    ncgen -o SS_temp.nc tempout.cdf
+    ncgen -o SS_salt.nc saltout.cdf
+    ncgen -o SS_hydro.nc flowout.cdf
+
+    cd ..
+
+
+else
+    echo 'Failed to compile hydro construct'
+
+fi

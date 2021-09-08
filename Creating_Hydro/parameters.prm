@@ -1,0 +1,141 @@
+# Message level setting: 0 = no messages, 1 = step-by-step
+# reporting on program progress
+verbose 0
+
+# read back exchanges per box
+verbose_exchange 0
+
+verbose_box 0
+
+# read back dates used to pad out the timeseries
+verbose_pad 0
+
+## General characteristics for flows
+# use unidirectional flows (so negative flow from A to B recast as positive flow from B to A)
+# either setting ok if flows reporting as net flow across faces, but if have gross flows set to 0
+unidirectional_flow 0
+
+# rewind file between reading lines (0=no which is faster, 1=yes which is safer)
+rewind 1
+
+# Generic code used (1) or hardwired read in (0)
+generic 1
+
+# Geometry file being used by boxmodel
+geofile SS_xy.bgm
+
+# File with lat-long coordinates of the faces in it - only really needed if using netcdf input data
+llgeofile SS_ll.bgm
+
+# Recycle flows through time
+recycle_flow 0
+
+# Slow diffusion (0 flows replaced by 0.0000001 flows) allowed (0=no, 1=yes)
+slow_diffusion 0
+
+# Assumed vertical diffusion allowed (0=no, 1=yes)
+vert_diffusion 0
+
+# Assumed (minimal) back diffusion allowed (0=no, 1=yes)
+back_diffusion 0
+
+# Reference year - exchanges etc are referenced from 07-01-2000 (MM-DD HH:MM:SS) of this year
+reference_year 2015
+
+# Start time of output file (days) starts on the 07-Jan-2000 11:48:16
+tstart 0
+
+# End time of output file (days) ends on the 30-Dec-2008 12:22:24
+tstop 726 #363
+
+# Time step of the output file (seconds) <=> %the time step is 1 day in the model
+dt 21600
+
+# Reset time so start at time zero rather than t = .... in file
+reset_time 0
+
+# Total (maxiumum) number of water column layers
+wcnz 6
+
+# Default water column layer thickness
+default_layer_dz 6
+25    25    50   150   150   300
+
+# Number of water column layers per box
+numlayers 130
+5 2 3 3 3 2 3 2 3 3 3 3 0 1 3 1 1 0 3 3 1 1 0 1 0 0 1 0 2 0 0 3 2 4 3 3 3 3 2 3 2 0 0 0 0 0 0 0 0 0 0 0 0 0 2 1 0 3 3 0 2 0 3 3 3 0 3 0 3 0 0 0 3 2 2 2 0 0 0 3 3 4 4 4 5 4 5 0 4 0 4 3 4 0 4 0 3 0 4 0 0 4 4 4 3 5 5 5 4 6 0 4 6 4 4 4 4 5 4 4 4 5 5 4 6 0 0 0 0 4
+
+# Boundary flag and boundary type (0 = non-boundary, 1 = normal boundary, 2 = absorptive, 3 = reflective)
+boundaries 130
+1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+# In addition to any scaling below, flows are area corrected to try and avoid hyperdiffusion (0 = no, 1 = yes, 2 = yes, with respect to the shape of the box)
+area_correct_flow 1
+area_correct_vflow 0
+
+# Scaling of flow per box (e.g. -1.0 to reverse flows)
+box_scaling 130
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+
+## Horizontal flow information
+# Number of destination cells
+ndest 100
+
+# Missing data value (flows < than -(this value) will be ignored)
+missing_data -1e20
+
+# Number of data entries per line
+n_inline 1
+
+# Data type (0 = Al Herman NOAA format, 1 = CSIRO flat format, 2 = CSIRO netcdf format)
+input_type 2
+
+# Units for flow data (0 = Sverdrups, 1 = m3/s)
+unit_type 1
+
+# Number output files
+numoutfile 1
+
+## Hydrodynamic files
+nhdfiles 2
+trans0.name SS_Transport_2015.nc
+trans1.name SS_Transport_2016.nc
+
+# Number of faces representing estuaries where need to "by hand" specify flows
+num_estuaries 0
+
+# Estuarine face ids (face numbers in geofile that define estuary mouth) - must have as many entries as specified by num_estuaries
+# or at least 1 entry, which ever is smaller
+river_ids 1
+0
+
+# Estuarine fluxes - must have as many entries as specified by num_estuaries
+# or at least 1 entry, which ever is smaller. Rates must be in the same units as in the raw data files
+river_influxes 1
+0
+river_outfluxes 1
+0
+
+## Vertical exchange files
+nvhdfiles 2
+vtrans0.name SS_Variables_2015.nc
+vtrans1.name SS_Variables_2016.nc
+
+## Temperature and Salinity file information
+# Temperature missing data values (temperatures < than -(this value) will be ignored)
+temp_missing_data -1e20
+
+# Salinity missing data values (salinities < than -(this value) will be ignored)
+salt_missing_data -1e20
+
+# Flag indicating whether absolute values or fluxes of temperature and salinity used
+# (0 = absolute values, 1 = fluxes added to init values, 2 = fluxes summed)
+tsflagflux 0
+
+# Temperature and salinity profile files
+ntsfiles 2
+tempsalt0.name SS_Variables_2015.nc
+tempsalt1.name SS_Variables_2016.nc
+
+pad_time 0
+ph_missing_data 0
